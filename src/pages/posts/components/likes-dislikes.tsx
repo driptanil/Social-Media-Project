@@ -46,6 +46,14 @@ export const LikesDislikes = (props: UserPost) => {
 	const likesDoc = query(likesRef);
 	const dislikesDoc = query(dislikesRef);
 
+	const [hasUserLiked, setHasUserLiked] = useState<boolean>(
+		likes?.find((like) => like.userId === user?.uid) != null
+	);
+
+	const [hasUserDisliked, setHasUserDisliked] = useState<boolean>(
+		dislikes?.find((dislike) => dislike.userId === user?.uid) != null
+	);
+
 	// selecting document id
 	// using `query` to only the post with given post id
 
@@ -73,6 +81,7 @@ export const LikesDislikes = (props: UserPost) => {
 			const newDoc = await addDoc(likesRef, {
 				userId: user?.uid,
 			});
+			setHasUserLiked(true);
 			if (user) {
 				setLikes((prev) =>
 					prev
@@ -90,6 +99,7 @@ export const LikesDislikes = (props: UserPost) => {
 			const newDoc = await addDoc(dislikesRef, {
 				userId: user?.uid,
 			});
+			setHasUserDisliked(true);
 			// adds new document, returns document id
 			if (user) {
 				setDislikes((prev) =>
@@ -117,6 +127,8 @@ export const LikesDislikes = (props: UserPost) => {
 			const likeToDelete = doc(docRef, "likes", likeId);
 
 			await deleteDoc(likeToDelete);
+
+			setHasUserLiked(false);
 			if (user) {
 				setLikes(
 					(prev) =>
@@ -127,7 +139,7 @@ export const LikesDislikes = (props: UserPost) => {
 			console.log(error);
 		}
 	};
-
+	
 	const removeDislike = async () => {
 		try {
 			const dislikeToDeleteQuery = query(
@@ -144,6 +156,8 @@ export const LikesDislikes = (props: UserPost) => {
 
 			await deleteDoc(dislikeToDelete);
 
+			setHasUserDisliked(false);
+
 			if (user) {
 				setDislikes(
 					(prev) =>
@@ -156,12 +170,6 @@ export const LikesDislikes = (props: UserPost) => {
 		}
 	};
 
-	let hasUserLiked: boolean =
-		likes?.find((like) => like.userId === user?.uid) != null;
-
-	let hasUserDisliked =
-		dislikes?.find((dislike) => dislike.userId === user?.uid) != null;
-
 	useEffect(() => {
 		getLikes();
 		getDislikes();
@@ -170,15 +178,19 @@ export const LikesDislikes = (props: UserPost) => {
 	const finallyLiked = () => {
 		if (hasUserDisliked) {
 			removeDislike();
+			setHasUserDisliked(false);
 		}
 		addLike();
+		setHasUserLiked(true);
 	};
 
 	const finallyDisLiked = () => {
 		if (hasUserLiked) {
 			removeLike();
+			setHasUserLiked(false);
 		}
 		addDislike();
+		setHasUserDisliked(true);
 	};
 
 	return (

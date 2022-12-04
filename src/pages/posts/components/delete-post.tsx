@@ -1,9 +1,17 @@
 import { BsTrash } from "react-icons/bs";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { async } from "@firebase/util";
-import { auth, db, Post, postsRef} from "../../../config/firebase";
-import { deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
+import { auth, Post, postsRef } from "../../../config/firebase";
+import {
+	collection,
+	CollectionReference,
+	deleteDoc,
+	doc,
+	DocumentData,
+	getDocs,
+	query,
+	where,
+} from "firebase/firestore";
 
 interface Userpost {
 	post: Post;
@@ -12,22 +20,41 @@ interface Userpost {
 export const DeletePost = (props: Userpost) => {
 	const { post } = props;
 
+	const postDetails = post;
+
 	const [user] = useAuthState(auth);
 
-	const removePost = async () => {
-		const toDeleteQuery = query(postsRef, where("userId", "==", user?.uid));
-		const toDeleteData = await getDocs(toDeleteQuery);
-		const postId = toDeleteData.docs[0].id;
-		const likeToDelete = doc(postsRef, postId);
+	const deleteCollection = async (
+		collectionRef: CollectionReference<DocumentData>
+	) => {
+		const data = await getDocs(collectionRef);
 
-		await deleteDoc(likeToDelete);
-        
+		data.docs.map(async (document) => {
+			await deleteDoc(doc(collectionRef, document.id));
+		});
+	};
+
+	const removePost = async () => {
+		try {
+			const post = doc(postsRef, postDetails.id);
+
+			const likes = collection(postsRef, postDetails.id, "likes");
+			const dislikes = collection(postsRef, postDetails.id, "dislikes");
+
+			deleteCollection(likes);
+			deleteCollection(dislikes);
+
+			await deleteDoc(post);
+
+			window.location.reload();
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
-		<button className="p-2 text-red-300">
+		<button onClick={removePost} className="p-2  text-red-300">
 			<BsTrash />
 		</button>
 	);
 };
-

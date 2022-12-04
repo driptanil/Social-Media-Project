@@ -1,5 +1,3 @@
-import React from "react";
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CreatePost } from "./pages/posts/create-post";
 import { Navbar } from "./components/navbar";

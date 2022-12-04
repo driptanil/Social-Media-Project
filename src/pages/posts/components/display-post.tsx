@@ -1,20 +1,21 @@
-import { BsCardHeading, BsTrash } from "react-icons/bs";
+import { BsCardHeading } from "react-icons/bs";
 import { MdOutlineDescription } from "react-icons/md";
 import { BiTime, BiUserPin } from "react-icons/bi";
 import { TbBinary } from "react-icons/tb";
-// import { Likes } from "./likes";
-// import { Dislikes } from "./dislikes";
 import { LikesDislikes } from "./likes-dislikes";
 import { DeletePost } from "./delete-post";
-import { Post } from "../../../config/firebase";
+import { auth, Post } from "../../../config/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface UserPost {
 	post: Post;
 }
 
 export const DisplayPost = (props: UserPost) => {
-	const { post } = props;
+	const [user] = useAuthState(auth);
 
+	const { post } = props;
+	const owner: boolean = post.userId === user?.uid;
 	return (
 		<div className="mt-5 rounded-lg bg-gradient-to-b from-cyan-900/20 to-pink-900/10 p-5 pl-4 pr-7 max-sm:mx-auto max-sm:w-96">
 			<div className="my-2 flex flex-row rounded-lg bg-neutral-900/70 shadow-lg shadow-cyan-500/40 ">
@@ -22,12 +23,12 @@ export const DisplayPost = (props: UserPost) => {
 				<h2 className="mr-auto inline  p-2 text-xl text-cyan-200 first-letter:font-serif">
 					{post.title}
 				</h2>
-				<button className="p-2 text-red-300">
-					<BsTrash />
-				</button>
+				{owner && <DeletePost post={post} />}
 			</div>
-			<div className="mt-4 flex flex-row items-center justify-center rounded-lg bg-neutral-900/70 shadow-lg shadow-pink-500/40">
-				<MdOutlineDescription className="mx-4 w-10 text-xl text-pink-400/50" />
+			<div className="flex flex-row items-center justify-center rounded-lg bg-neutral-900/70 shadow-lg shadow-pink-500/40" >
+				<div className="w-4 pl-4 pr-6">
+					<MdOutlineDescription className="text-xl text-pink-400/50" />
+				</div>
 				<p className="mr-auto inline p-4 leading-8 text-pink-200/80 first-letter:float-left first-letter:mr-1 first-letter:font-serif first-letter:text-6xl">
 					{post.description}
 				</p>
