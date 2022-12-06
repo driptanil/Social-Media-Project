@@ -56,6 +56,7 @@ export const CreateForm = () => {
 			userId: user?.uid,
 			created: Timestamp.now(),
 			date: formattedTime.join(" "),
+			userPic: user?.photoURL || "",
 			// uid is the id used by Google used to refer to the specific user
 		});
 
@@ -111,7 +112,7 @@ export const CreateForm = () => {
 					{...register("description")}
 					onChange={handleDescriptionChange}
 				/>
-				{description.trim() !== "" && (
+				{description !== "" && (
 					<caption className="-my-4 ml-auto -translate-y-7 bg-neutral-900/50 py-2 px-4 text-sm text-slate-500">
 						{countWords} words
 					</caption>
@@ -120,12 +121,13 @@ export const CreateForm = () => {
 					{errors.description?.message}
 				</p>
 				<button
-					type="submit" className="m-2 ml-auto rounded-lg
-					bg-neutral-900/20 text-pink-300 shadow-lg shadow-pink-500/40 py-3 px-5
+					type="submit"
+					className="m-2 ml-auto rounded-lg
+					bg-neutral-900/20 py-3 px-5 text-pink-300 shadow-lg shadow-pink-500/40
 					transition delay-150 duration-300 ease-in-out
 					hover:-translate-y-1 hover:scale-110 hover:text-cyan-300
 					hover:shadow-cyan-500/40">
-						<RiChatUploadLine className="inline text-xl mr-3"/>
+					<RiChatUploadLine className="mr-3 inline text-xl" />
 					<p className="inline">Submit</p>
 				</button>
 			</form>

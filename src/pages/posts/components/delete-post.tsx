@@ -1,4 +1,4 @@
-import { BsTrash } from "react-icons/bs";
+import { BiTrashAlt } from "react-icons/bi";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, Post, postsRef } from "../../../config/firebase";
@@ -53,8 +53,8 @@ export const DeletePost = (props: Userpost) => {
 	};
 
 	return (
-		<button onClick={removePost} className="p-2  text-red-300">
-			<BsTrash />
+		<button onClick={removePost} className="my-4 flex flex-row items-center rounded-lg p-1 text-lg text-red-300">
+			<BiTrashAlt />
 		</button>
 	);
 };

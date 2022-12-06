@@ -209,7 +209,7 @@ export const LikesDislikes = (props: UserPost) => {
 			</button>
 			<button
 				onClick={hasUserDisliked ? removeDislike : finallyDisLiked}
-				className="my-4 flex flex-row items-center rounded-lg p-1 text-pink-300">
+				className="my-4 flex flex-row items-center rounded-lg p-1 text-white">
 				{hasUserDisliked ? (
 					<AiFillDislike className="mx-2  text-lg " />
 				) : (
