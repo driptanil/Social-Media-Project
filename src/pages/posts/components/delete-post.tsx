@@ -1,7 +1,6 @@
 import { BiTrashAlt } from "react-icons/bi";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, Post, postsRef } from "../../../config/firebase";
+import { Post, postsRef } from "../../../config/firebase";
 import {
 	collection,
 	CollectionReference,
@@ -9,8 +8,6 @@ import {
 	doc,
 	DocumentData,
 	getDocs,
-	query,
-	where,
 } from "firebase/firestore";
 
 interface Userpost {
@@ -21,8 +18,6 @@ export const DeletePost = (props: Userpost) => {
 	const { post } = props;
 
 	const postDetails = post;
-
-	const [user] = useAuthState(auth);
 
 	const deleteCollection = async (
 		collectionRef: CollectionReference<DocumentData>
