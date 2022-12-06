@@ -56,7 +56,7 @@ export const CreateForm = () => {
 			userId: user?.uid,
 			created: Timestamp.now(),
 			date: formattedTime.join(" "),
-			userPic: user?.photoURL || "",
+			userPic: user?.photoURL?.split("=")[0] || "",
 			// uid is the id used by Google used to refer to the specific user
 		});
 

@@ -78,7 +78,7 @@ export const LikesDislikes = (props: UserPost) => {
 
 	const addLike = async () => {
 		try {
-			const newDoc = await addDoc(likesRef, {
+			await addDoc(likesRef, {
 				userId: user?.uid,
 			});
 			setHasUserLiked(true);
@@ -96,7 +96,7 @@ export const LikesDislikes = (props: UserPost) => {
 
 	const addDislike = async () => {
 		try {
-			const newDoc = await addDoc(dislikesRef, {
+			await addDoc(dislikesRef, {
 				userId: user?.uid,
 			});
 			setHasUserDisliked(true);
@@ -139,7 +139,7 @@ export const LikesDislikes = (props: UserPost) => {
 			console.log(error);
 		}
 	};
-	
+
 	const removeDislike = async () => {
 		try {
 			const dislikeToDeleteQuery = query(
@@ -173,7 +173,7 @@ export const LikesDislikes = (props: UserPost) => {
 	useEffect(() => {
 		getLikes();
 		getDislikes();
-	}, []);
+	}, [""]);
 
 	const finallyLiked = () => {
 		if (hasUserDisliked) {
@@ -203,7 +203,7 @@ export const LikesDislikes = (props: UserPost) => {
 				) : (
 					<AiOutlineLike className="mx-2  text-2xl " />
 				)}
-				{likes && likes.length != 0 && (
+				{likes && likes.length !== 0 && (
 					<p className="mx-2 inline text-sm"> {likes.length}</p>
 				)}
 			</button>
@@ -215,7 +215,7 @@ export const LikesDislikes = (props: UserPost) => {
 				) : (
 					<AiOutlineDislike className="mx-2  text-lg " />
 				)}
-				{dislikes && dislikes.length != 0 && (
+				{dislikes && dislikes.length !== 0 && (
 					<p className="mx-2 inline text-sm"> {dislikes.length}</p>
 				)}
 			</button>

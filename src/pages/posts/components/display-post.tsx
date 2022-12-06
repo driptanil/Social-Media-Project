@@ -8,7 +8,6 @@ interface UserPost {
 }
 
 export const DisplayPost = (props: UserPost) => {
-	
 	const [user] = useAuthState(auth);
 	const { post } = props;
 	const owner: boolean = post.userId === user?.uid;
@@ -17,8 +16,9 @@ export const DisplayPost = (props: UserPost) => {
 		<div className="mt-5 flex items-center max-md:flex-col max-md:items-center">
 			<div className="max-md:t my-4 -mr-14 h-44 w-40 rounded-full rounded-br bg-cyan-700/30 p-3 pb-1 max-md:mr-52 max-md:-mb-20">
 				<img
-					src={post.userPic}
-					className="w-40 rounded-full rounded-br" alt="profile pic"></img>
+					src={post.userPic + "=s300-c"}
+					className="w-40 rounded-full rounded-br"
+					alt="profile pic"></img>
 				<p className="ml-3 w-32 pt-1 text-right text-xs font-light text-white">
 					@{post.username}
 				</p>

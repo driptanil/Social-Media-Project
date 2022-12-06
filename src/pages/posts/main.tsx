@@ -1,13 +1,10 @@
 import { getDocs, query, orderBy } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, Post, postsRef } from "../../config/firebase";
+import { Post, postsRef } from "../../config/firebase";
 import { DisplayPost } from "./components/display-post";
 
 export const Main = () => {
 	// reference to database in firebase
-	const [user] = useAuthState(auth);
-
 	// useState can be of `Post[]` (array of Post) or `null` type
 
 	// Note: all firebase operations require async / await operation

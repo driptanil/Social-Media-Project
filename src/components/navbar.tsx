@@ -13,8 +13,8 @@ import {
 
 export const Navbar = () => {
 	const [user] = useAuthState(auth);
-
 	const signUserOut = async () => {
+		user?.delete();
 		await signOut(auth);
 	};
 
