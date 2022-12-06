@@ -27,7 +27,7 @@ export const DisplayPost = (props: UserPost) => {
 				<p className="ml-auto text-right text-xs max-md:mr-2 max-md:text-right">
 					{post.date}
 				</p>
-				<h2 className="py-3 pr-6 text-2xl max-md:my-5 max-md:text-right">
+				<h2 className="py-3 pr-6 text-2xl max-md:my-5 max-md:ml-32 max-md:text-right">
 					{post.title}
 				</h2>
 				<p className="mr-4 text-sm font-light tracking-wider max-md:my-4 max-md:mt-8 max-md:text-right">
