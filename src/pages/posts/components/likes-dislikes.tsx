@@ -46,13 +46,9 @@ export const LikesDislikes = (props: UserPost) => {
 	const likesDoc = query(likesRef);
 	const dislikesDoc = query(dislikesRef);
 
-	const [hasUserLiked, setHasUserLiked] = useState<boolean>(
-		likes?.find((like) => like.userId === user?.uid) != null
-	);
+	const [hasUserLiked, setHasUserLiked] = useState<boolean>(false);
 
-	const [hasUserDisliked, setHasUserDisliked] = useState<boolean>(
-		dislikes?.find((dislike) => dislike.userId === user?.uid) != null
-	);
+	const [hasUserDisliked, setHasUserDisliked] = useState<boolean>(false);
 
 	// selecting document id
 	// using `query` to only the post with given post id
@@ -64,16 +60,17 @@ export const LikesDislikes = (props: UserPost) => {
 				userId: doc.data().userId,
 			}))
 		);
+		setHasUserLiked(likes?.find((like) => like.userId === user?.uid) != null);
 	};
 
 	const getDislikes = async () => {
 		const data = await getDocs(dislikesDoc);
-
 		setDislikes(
 			data.docs.map((doc) => ({
 				userId: doc.data().userId,
 			}))
 		);
+		setHasUserDisliked(dislikes?.find((dislike) => dislike.userId === user?.uid) != null);
 	};
 
 	const addLike = async () => {
@@ -173,7 +170,7 @@ export const LikesDislikes = (props: UserPost) => {
 	useEffect(() => {
 		getLikes();
 		getDislikes();
-	}, [""]);
+	});
 
 	const finallyLiked = () => {
 		if (hasUserDisliked) {

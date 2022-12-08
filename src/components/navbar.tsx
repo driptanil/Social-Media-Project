@@ -11,10 +11,18 @@ import {
 	HiPlus,
 } from "react-icons/hi";
 
+// 
+// 
+
+// Highway to Hell 😈
+// Today, it will be me dead or you. But whoever it is, he’ll wake up in hell tomorrow.
+
+
+
+
 export const Navbar = () => {
 	const [user] = useAuthState(auth);
 	const signUserOut = async () => {
-		user?.delete();
 		await signOut(auth);
 	};
 
