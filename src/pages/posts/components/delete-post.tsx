@@ -1,4 +1,5 @@
 import { BiTrashAlt } from "react-icons/bi";
+import { TiTickOutline, TiTimesOutline } from "react-icons/ti";
 
 import { Post, postsRef } from "../../../config/firebase";
 import {
@@ -9,12 +10,17 @@ import {
 	DocumentData,
 	getDocs,
 } from "firebase/firestore";
+import { useContext, useState } from "react";
+import { AppContext } from "../../../App";
 
 interface Userpost {
 	post: Post;
 }
 
 export const DeletePost = (props: Userpost) => {
+
+	const refetchObject = useContext(AppContext);
+
 	const { post } = props;
 
 	const postDetails = post;
@@ -41,15 +47,39 @@ export const DeletePost = (props: Userpost) => {
 
 			await deleteDoc(post);
 
-			window.location.reload();
+			refetchObject?.setRefetch(true);
+			// window.location.reload();
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
+	const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+
+	const toggleConfirmDelete = () => {
+		if (confirmDelete) {
+			setConfirmDelete(false);
+		} else {
+			setConfirmDelete(true);
+		}
+	};
+
 	return (
-		<button onClick={removePost} className="my-4 flex flex-row items-center rounded-lg p-1 text-lg text-red-300">
-			<BiTrashAlt />
-		</button>
+		<div className="my-4 flex flex-row items-center rounded-lg p-1 text-lg">
+			{!confirmDelete ? (
+				<button onClick={toggleConfirmDelete} className=" text-red-300">
+					<BiTrashAlt />
+				</button>
+			) : (
+				<div className="flex text-xl">
+					<button className="text-red-300 " onClick={removePost}>
+						<TiTickOutline />
+					</button>
+					<button onClick={toggleConfirmDelete}>
+						<TiTimesOutline />
+					</button>
+				</div>
+			)}
+		</div>
 	);
 };

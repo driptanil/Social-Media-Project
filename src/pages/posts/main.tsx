@@ -1,9 +1,14 @@
 import { getDocs, query, orderBy } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../App";
 import { Post, postsRef } from "../../config/firebase";
 import { DisplayPost } from "./components/display-post";
 
 export const Main = () => {
+	const refetchObject = useContext(AppContext);
+
+	refetchObject?.setRefetch(true);
+
 	// reference to database in firebase
 	// useState can be of `Post[]` (array of Post) or `null` type
 
@@ -32,8 +37,11 @@ export const Main = () => {
 	};
 
 	useEffect(() => {
-		getPosts();
-	}, []);
+		if (refetchObject?.refetch) {
+			getPosts();
+			refetchObject?.setRefetch(false);
+		}
+	});
 
 	return (
 		<div className="m-auto my-5 flex max-w-lg flex-col">

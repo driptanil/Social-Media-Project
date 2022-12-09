@@ -45,11 +45,6 @@ export const LikesDislikes = (props: UserPost) => {
 
 	const likesDoc = query(likesRef);
 	const dislikesDoc = query(dislikesRef);
-
-	const [hasUserLiked, setHasUserLiked] = useState<boolean>(false);
-
-	const [hasUserDisliked, setHasUserDisliked] = useState<boolean>(false);
-
 	// selecting document id
 	// using `query` to only the post with given post id
 
@@ -60,7 +55,6 @@ export const LikesDislikes = (props: UserPost) => {
 				userId: doc.data().userId,
 			}))
 		);
-		setHasUserLiked(likes?.find((like) => like.userId === user?.uid) != null);
 	};
 
 	const getDislikes = async () => {
@@ -70,15 +64,25 @@ export const LikesDislikes = (props: UserPost) => {
 				userId: doc.data().userId,
 			}))
 		);
-		setHasUserDisliked(dislikes?.find((dislike) => dislike.userId === user?.uid) != null);
 	};
+
+	useEffect(() => {
+		getLikes();
+		getDislikes();
+	}, []);
+
+	let hasUserLiked: boolean =
+		likes?.find((like) => like.userId === user?.uid) != null;
+
+	let hasUserDisliked: boolean =
+		dislikes?.find((dislike) => dislike.userId === user?.uid) != null;
 
 	const addLike = async () => {
 		try {
 			await addDoc(likesRef, {
 				userId: user?.uid,
 			});
-			setHasUserLiked(true);
+			hasUserLiked = true;
 			if (user) {
 				setLikes((prev) =>
 					prev
@@ -96,7 +100,7 @@ export const LikesDislikes = (props: UserPost) => {
 			await addDoc(dislikesRef, {
 				userId: user?.uid,
 			});
-			setHasUserDisliked(true);
+			hasUserDisliked = true;
 			// adds new document, returns document id
 			if (user) {
 				setDislikes((prev) =>
@@ -125,7 +129,7 @@ export const LikesDislikes = (props: UserPost) => {
 
 			await deleteDoc(likeToDelete);
 
-			setHasUserLiked(false);
+			hasUserLiked = false;
 			if (user) {
 				setLikes(
 					(prev) =>
@@ -153,7 +157,7 @@ export const LikesDislikes = (props: UserPost) => {
 
 			await deleteDoc(dislikeToDelete);
 
-			setHasUserDisliked(false);
+			hasUserDisliked = false;
 
 			if (user) {
 				setDislikes(
@@ -167,36 +171,31 @@ export const LikesDislikes = (props: UserPost) => {
 		}
 	};
 
-	useEffect(() => {
-		getLikes();
-		getDislikes();
-	});
-
 	const finallyLiked = () => {
 		if (hasUserDisliked) {
 			removeDislike();
-			setHasUserDisliked(false);
+			hasUserDisliked = false;
 		}
 		addLike();
-		setHasUserLiked(true);
+		hasUserLiked = true;
 	};
 
 	const finallyDisLiked = () => {
 		if (hasUserLiked) {
 			removeLike();
-			setHasUserLiked(false);
+			hasUserLiked = false;
 		}
 		addDislike();
-		setHasUserDisliked(true);
+		hasUserDisliked = true;
 	};
 
 	return (
 		<div className="flex flex-row">
 			<button
 				onClick={hasUserLiked ? removeLike : finallyLiked}
-				className="my-4 ml-5 flex flex-row items-center rounded-lg p-1 text-cyan-300 ">
+				className="like my-4 ml-5 flex flex-row items-center rounded-lg p-1 text-cyan-300">
 				{hasUserLiked ? (
-					<AiFillLike className="mx-2  text-2xl " />
+					<AiFillLike className="mx-2 text-2xl" />
 				) : (
 					<AiOutlineLike className="mx-2  text-2xl " />
 				)}
