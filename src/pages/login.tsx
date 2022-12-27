@@ -10,13 +10,14 @@ export const Login = () => {
 	const navigate = useNavigate();
 
 	const signInWithGoogle = async () => {
-		const result = await signInWithPopup(auth, provider);
-		console.log(result);
+		await signInWithPopup(auth, provider);
+		// console.log(result);
+
 		navigate("/");
 	};
 
 	return (
-		<div className="m-auto my-10 flex max-w-xl max-md:w-3/4 flex-col rounded-xl bg-gradient-to-b from-neutral-800/40 to-cyan-900/10 p-5">
+		<div className="m-auto my-10 flex max-w-xl flex-col rounded-xl bg-gradient-to-b from-neutral-800/40 to-cyan-900/10 p-5 max-md:w-3/4">
 			<div className="m-auto my-6 text-cyan-300">
 				<GiKeyLock className=" my-1 mr-3 inline -translate-y-0.5 pr-1 text-3xl" />
 				<p className="inline text-xl">Authentication</p>

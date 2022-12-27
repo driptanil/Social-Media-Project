@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../App";
 import { Post, postsRef } from "../../config/firebase";
 import { DisplayPost } from "./components/display-post";
+import { motion } from "framer-motion";
 
 export const Main = () => {
 	const refetchObject = useContext(AppContext);
@@ -41,13 +42,45 @@ export const Main = () => {
 			getPosts();
 			refetchObject?.setRefetch(false);
 		}
-	});
+	}, [""]);
+
+	const container: any = {
+		hidden: { opacity: 0, y: 40 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: {
+				delayChildren: 0.3,
+				staggerChildren: 0.5,
+				duration: 0.8,
+			},
+		},
+	};
+
+	const child: any = {
+		hidden: { y: 40, opacity: 0 },
+		visible: {
+			y: 0,
+			opacity: 1,
+		},
+		transition: {
+			duration: 1,
+		},
+	};
 
 	return (
-		<div className="m-auto my-5 flex max-w-lg flex-col">
-			{postsList?.map((post) => (
-				<DisplayPost post={post} />
-			))}
-		</div>
+		<motion.div
+			className="m-auto my-5 flex max-w-lg list-none flex-col"
+			variants={container}
+			initial="hidden"
+			animate="visible">
+			{postsList?.map((post) => {
+				return (
+					<motion.li variants={child}>
+						<DisplayPost post={post} />
+					</motion.li>
+				);
+			})}
+		</motion.div>
 	);
 };

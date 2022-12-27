@@ -15,7 +15,8 @@ import {
 	AiOutlineDislike,
 	AiFillDislike,
 } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../../App";
 
 interface UserPost {
 	post: Post;
@@ -30,6 +31,8 @@ interface Dislike {
 }
 
 export const LikesDislikes = (props: UserPost) => {
+	const refetchObject = useContext(AppContext);
+
 	const { post } = props;
 
 	const [user] = useAuthState(auth);
@@ -67,9 +70,11 @@ export const LikesDislikes = (props: UserPost) => {
 	};
 
 	useEffect(() => {
-		getLikes();
-		getDislikes();
-	}, []);
+		if (refetchObject?.refetch) {
+			getLikes();
+			getDislikes();
+		}
+	});
 
 	let hasUserLiked: boolean =
 		likes?.find((like) => like.userId === user?.uid) != null;
