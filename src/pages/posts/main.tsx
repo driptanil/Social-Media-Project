@@ -42,41 +42,38 @@ export const Main = () => {
 			getPosts();
 			refetchObject?.setRefetch(false);
 		}
-	}, [""]);
+	}, []);
 
-	const container: any = {
-		hidden: { opacity: 0, y: 40 },
-		visible: {
-			opacity: 1,
-			y: 0,
-			transition: {
-				delayChildren: 0.3,
-				staggerChildren: 0.5,
-				duration: 0.8,
-			},
-		},
-	};
+	// const container: any = {
+	// 	hidden: { opacity: 0, y: 40 },
+	// 	visible: {
+	// 		opacity: 1,
+	// 		y: 0,
+	// 		transition: {
+	// 			delayChildren: 0.3,
+	// 			staggerChildren: 5,
+	// 			duration: 0.8,
+	// 		},
+	// 	},
+	// };
 
-	const child: any = {
-		hidden: { y: 40, opacity: 0 },
-		visible: {
-			y: 0,
-			opacity: 1,
-		},
-		transition: {
-			duration: 1,
-		},
-	};
+	// const child: any = {
+	// 	hidden: { y: 400, opacity: 0 },
+	// 	visible: {
+	// 		y: 0,
+	// 		opacity: 1,
+	// 	},
+	// 	transition: {
+	// 		duration: 4,
+	// 	},
+	// };
 
 	return (
 		<motion.div
-			className="m-auto my-5 flex max-w-lg list-none flex-col"
-			variants={container}
-			initial="hidden"
-			animate="visible">
+			className="m-auto my-5 flex max-w-lg list-none flex-col">
 			{postsList?.map((post) => {
 				return (
-					<motion.li variants={child}>
+					<motion.li >
 						<DisplayPost post={post} />
 					</motion.li>
 				);

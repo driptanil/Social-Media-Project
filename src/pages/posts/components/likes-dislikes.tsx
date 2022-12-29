@@ -74,7 +74,7 @@ export const LikesDislikes = (props: UserPost) => {
 			getLikes();
 			getDislikes();
 		}
-	});
+	}, []);
 
 	let hasUserLiked: boolean =
 		likes?.find((like) => like.userId === user?.uid) != null;
